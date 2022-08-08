@@ -1,14 +1,19 @@
 {
-  "name": "transaction-creation-lib",
+  "name": "ergonames-tx-lib",
   "version": "0.0.1",
-  "description": "",
+  "description": "A SDK for building ErgoNames minting transactions.",
   "main": "index.js",
   "module": "module",
+  "homepage": "https://ergonames.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ergonames/transaction-builder"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Ergo Names",
+  "license": "MIT",
   "dependencies": {
     "ergo-lib-wasm-browser": "^0.18.0",
     "json-bigint": "^1.0.0",

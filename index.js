@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 import JSONBigInt from "json-bigint";
 
 const DEFAULT_EXPLORER_URL = "https://api-testnet.ergoplatform.com";
-const ERGONAMES_MINT_ADDRESS = "3WycHxEz8ExeEWpUBwvu1FKrpY8YQCiH1S9PfnAvBX1K73BXBXZa";
+const ERGONAMES_CONTRACT_ADDRESS = "3WycHxEz8ExeEWpUBwvu1FKrpY8YQCiH1S9PfnAvBX1K73BXBXZa";
 
 async function get_current_height(explorer_url = DEFAULT_EXPLORER_URL) {
     let url = explorer_url + "/api/v1/blocks?limit=1";
@@ -12,7 +12,7 @@ async function get_current_height(explorer_url = DEFAULT_EXPLORER_URL) {
         .then(data => { return data["total"]; })
 }
 
-export async function send_transaction(nanoerg_amount) {
+export async function send_transaction(nanoerg_amount, explorer_url = DEFAULT_EXPLORER_URL) {
     ergo.get_balance().then(async function() {
         async function getUtxos(amountToSend) {
             const fee = BigInt(wasm.TxBuilder.SUGGESTED_TX_FEE().as_i64().to_str());
@@ -31,7 +31,7 @@ export async function send_transaction(nanoerg_amount) {
             return filteredUtxos;
         }
 
-        const creationHeight = await get_current_height();
+        const creationHeight = await get_current_height(explorer_url);
         console.log(creationHeight);
 
         const amountToSend = BigInt(nanoerg_amount);
@@ -56,7 +56,7 @@ export async function send_transaction(nanoerg_amount) {
 
         const outBoxBuilder = new wasm.ErgoBoxCandidateBuilder(
             amountToSendBoxValue,
-            wasm.Contract.pay_to_address(wasm.Address.from_base58(ERGONAMES_MINT_ADDRESS)),
+            wasm.Contract.pay_to_address(wasm.Address.from_base58(ERGONAMES_CONTRACT_ADDRESS)),
             creationHeight);
 
         try {
