@@ -1,6 +1,6 @@
 {
   "name": "ergonames-tx-lib",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A SDK for building ErgoNames minting transactions.",
   "main": "index.js",
   "module": "module",
@@ -15,6 +15,8 @@
   "author": "Ergo Names",
   "license": "MIT",
   "dependencies": {
+    "assert": "^2.0.0",
+    "buffer": "^6.0.3",
     "ergo-lib-wasm-browser": "^0.18.0",
     "json-bigint": "^1.0.0",
     "node-fetch": "^3.2.10"

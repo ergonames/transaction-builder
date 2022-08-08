@@ -137,9 +137,10 @@ export async function send_transaction(nanoerg_amount, explorer_url = DEFAULT_EX
             return txId;
         }
 
-        processTx(correctTx).then(txId => {
+        let txId = processTx(correctTx).then(txId => {
             return txId;
         });
+        return txId;
     });
 }
 
