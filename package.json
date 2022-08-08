@@ -10,6 +10,7 @@
     "url": "https://github.com/ergonames/transaction-builder"
   },
   "scripts": {
+    "start": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ergo Names",
@@ -17,8 +18,12 @@
   "dependencies": {
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
-    "ergo-lib-wasm-browser": "^0.18.0",
-    "json-bigint": "^1.0.0",
-    "node-fetch": "^3.2.10"
+    "ergo-lib-wasm-browser": "^0.19.0",
+    "json-bigint": "^1.0.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.3"
   }
 }

@@ -1,5 +1,4 @@
 import * as wasm from "ergo-lib-wasm-browser";
-import fetch from "node-fetch";
 import JSONBigInt from "json-bigint";
 
 const DEFAULT_EXPLORER_URL = "https://api-testnet.ergoplatform.com";
