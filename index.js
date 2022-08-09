@@ -3,6 +3,7 @@ import JSONBigInt from "json-bigint";
 
 const DEFAULT_EXPLORER_URL = "https://api-testnet.ergoplatform.com";
 const ERGONAMES_CONTRACT_ADDRESS = "3WycHxEz8ExeEWpUBwvu1FKrpY8YQCiH1S9PfnAvBX1K73BXBXZa";
+const ROYALTY_PERCENTAGE = 20;
 
 async function get_current_height(explorer_url = DEFAULT_EXPLORER_URL) {
     let url = explorer_url + "/api/v1/blocks?limit=1";
@@ -11,7 +12,7 @@ async function get_current_height(explorer_url = DEFAULT_EXPLORER_URL) {
         .then(data => { return data["total"]; })
 }
 
-export async function send_transaction(nanoerg_amount, explorer_url = DEFAULT_EXPLORER_URL) {
+export async function send_transaction(ergoname_price, ergoname_name, reciever_address, explorer_url = DEFAULT_EXPLORER_URL) {
     ergoConnector.nautilus.connect().then(() => {
         ergo.get_balance().then(async function() {
             async function getUtxos(amountToSend) {
@@ -34,7 +35,7 @@ export async function send_transaction(nanoerg_amount, explorer_url = DEFAULT_EX
             const creationHeight = await get_current_height(explorer_url);
             console.log(creationHeight);
 
-            const amountToSend = BigInt(nanoerg_amount);
+            const amountToSend = BigInt(ergoname_price);
             const amountToSendBoxValue = wasm.BoxValue.from_i64(wasm.I64.from_str(amountToSend.toString()));
             const utxos = await getUtxos(amountToSend);
             let utxosValue = utxos.reduce((acc, utxo) => acc += BigInt(utxo.value), BigInt(0));
@@ -54,10 +55,15 @@ export async function send_transaction(nanoerg_amount, explorer_url = DEFAULT_EX
 
             const outputCandidates = wasm.ErgoBoxCandidates.empty();
 
-            const outBoxBuilder = new wasm.ErgoBoxCandidateBuilder(
+            let outBoxBuilder = new wasm.ErgoBoxCandidateBuilder(
                 amountToSendBoxValue,
                 wasm.Contract.pay_to_address(wasm.Address.from_base58(ERGONAMES_CONTRACT_ADDRESS)),
                 creationHeight);
+
+            outBoxBuilder.add_register_candidate(wasm.NonMandatoryRegisterId.R4, ROYALTY_PERCENTAGE);
+            outBoxBuilder.add_register_candidate(wasm.NonMandatoryRegisterId.R5, ergoname_name);
+            outBoxBuilder.add_register_candidate(wasm.NonMandatoryRegisterId.R6, ergoname_price.toString());
+            outBoxBuilder.add_register_candidate(wasm.NonMandatoryRegisterId.R7, reciever_address);
 
             try {
                 outputCandidates.add(outBoxBuilder.build());
