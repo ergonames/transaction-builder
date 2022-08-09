@@ -60,10 +60,10 @@ export async function send_transaction(ergoname_price, ergoname_name, reciever_a
                 wasm.Contract.pay_to_address(wasm.Address.from_base58(ERGONAMES_CONTRACT_ADDRESS)),
                 creationHeight);
 
-            outBoxBuilder.add_register_candidate(wasm.NonMandatoryRegisterId.R4, ROYALTY_PERCENTAGE);
-            outBoxBuilder.add_register_candidate(wasm.NonMandatoryRegisterId.R5, ergoname_name);
-            outBoxBuilder.add_register_candidate(wasm.NonMandatoryRegisterId.R6, ergoname_price.toString());
-            outBoxBuilder.add_register_candidate(wasm.NonMandatoryRegisterId.R7, reciever_address);
+            outBoxBuilder.set_register_value(4, wasm.Constant.from_i64(ROYALTY_PERCENTAGE));
+            outBoxBuilder.set_register_value(5, wasm.Constant.from_byte_array(ergoname_name));
+            outBoxBuilder.set_register_value(7, wasm.Constant.from_i64(ergoname_price));
+            outBoxBuilder.set_register_value(7, wasm.Constant.from_byte_array(reciever_address));
 
             try {
                 outputCandidates.add(outBoxBuilder.build());
